@@ -5,20 +5,29 @@ module.exports = {
       type: 'string'
     },
     family: {
-      type: 'string'
+      type: 'array'
     },
     given: {
-      type: 'string'
+      type: 'array'
     },
     prefix: {
-      type: 'string'
+      type: 'array'
     },
     suffix: {
-      type: 'string'
+      type: 'array'
     },
     use: {
       type: 'string',
       enum: ['usual', 'official', 'temp', 'nickname', 'anonymous', 'old', 'maiden']
     }
+  },
+
+  beforeCreate: function (values, cb) {
+    var prefixes = values.prefix.join(' ');
+    var fullGivenName = values.given.join(' ');
+    var fullFamilyName = values.family.join(' ');
+    var suffixes = values.suffix.join(' ');
+    values.text = [prefixes, fullGivenName, fullFamilyName, suffixes].join(' ');
+    cb();
   }
 };
